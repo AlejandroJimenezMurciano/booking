@@ -8,23 +8,10 @@ const reserveElement = document.getElementById('reserve');
 const reserveStatusElement = document.getElementById('reserve-status');
 const rootStyles = document.documentElement.style;
 
-//funcion para ver si un año es bisiesto
-const isLeap = year => (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-
-const date = new Date();
-
-let year = date.getFullYear();
-let month = date.getMonth();
-let day = date.getDate();
-let allNumericDays;
-let getTheWeekDay;
-
-const firstDay = new Date(year, month, '1');
-
 //Objeto con dias de la semana
 const daysOfMonth = {
   january: 31,
-  february: isLeap(year) ? 29 : 28,
+  february: isLeap(actualYear) ? 29 : 28,
   march: 31,
   april: 30,
   may: 31,
@@ -64,36 +51,46 @@ const daysOfWeek = [
   'sunday'
 ];
 
-//funcion para imprimir el calendario en pantalla
-const createCalendar = () => {
-  const fragment = document.createDocumentFragment();
-  for (let index = 0; index < daysOfWeek.length; index++) {
-    const weekDayCalendar = document.createElement('div');
-    weekDayCalendar.textContent = daysOfWeek[index];
-    fragment.append(weekDayCalendar);
+//funcion para ver si un año es bisiesto
+const isLeap = year => (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+
+//Constantes y variables
+const date = new Date();
+const today = date.getDay();
+const currentMonth = date.getDate();
+const actualYear = date.getMonth();
+const currentDate = date.getFullYear();
+
+let allDays;
+let WeekDay;
+let dinners;
+let reserve;
+let reservationDay;
+let reservationHour;
+
+//funcion para poner los dias de la semana en el cabecero del calendario
+for (const day of daysOfWeek) {
+  const headerDays = document.createElement('span');
+  headerDays.classList.add('day-header');
+  headerDays.textContent = day;
+  calendarElement.append(headerDays);
+}
+
+//función para poner los dias de la semana
+const getDaysOfWeek = day => newDate(actualYear, currentMonth, day).getDay();
+
+//funcion para imprimir los dias que tiene cada mes
+const printDaysOfMonth = () => {
+  const firstDay = getDayOfWeek(1);
+  rootStyles.setProperty('--first-day-column', firstDay === 0 ? 7 : firstDay);
+
+  const newDay = document.createElement('span');
+  newDay.classList.add('first', 'first-day');
+  if (actualDate > 1) newDay.classList.add('disabled');
+  calendarElement.append(newDay);
+  for (let i = 2; i <= daysOfMonth[months[currentMonth]]; i++) {
+    const newDay = document.createElement('span');
+    newDay.classList.add('day');
+    newDay.textContent = i;
   }
-
-  for (let index = 1; index <= daysOfMonth[months[months]]; index++) {
-    const dayCalendar = document.createElement('div');
-    dayCalendar.classList.add('day');
-    fragment.append(dayCalendar);
-    dayCalendar.textContent = index;
-
-    if (index < day) {
-      dayCalendar.classList.add('disabled');
-    } else if (day === index) {
-      dayCalendar.classList.add('today');
-    }
-
-    if (index === 1) {
-      dayCalendar.classList.add('first-day');
-    }
-    let column;
-    if (firstDay.getDay() === 0) column = 7;
-    else column = firstDay.getDay();
-
-    rootStyles.setProperty('--first-day-column', column);
-  }
-  calendarElement.append(fragment);
-  allNumericDays = document.querySelectorAll('.day');
 };
