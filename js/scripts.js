@@ -40,10 +40,31 @@ const daysOfMonth = {
 };
 
 //Array con meses del año
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+];
 
 //Array con semanas del año
-const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+const daysOfWeek = [
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+  'sunday'
+];
 
 //Objeto con la hora de apertura y cierre del restaurante
 const hours = {
@@ -76,12 +97,12 @@ const createCalendar = () => {
     newDiv.textContent = day;
     newDiv.classList.add('day');
     newDiv.dataset.day = day;
-    if (day ===1) {
+    if (day === 1) {
       newDiv.classList.add('first-day');
     }
     if (day < currentDay) {
       newDiv.classList.add('disabled');
-    } else if (day === currentDay){
+    } else if (day === currentDay) {
       newDiv.classList.add('today');
     }
     fragment.append(newDiv);
@@ -184,8 +205,14 @@ calendarElement.addEventListener('click', ev => {
   shiftElement.disabled = true;
   hoursElement.disabled = true;
   reserveElement.disabled = true;
-  document.querySelectorAll('.day').forEach(item => item.classList.remove('selected'));
-  if (ev.target.classList.contains('disabled') || !ev.target.classList.contains('day')) return;
+  document
+    .querySelectorAll('.day')
+    .forEach(item => item.classList.remove('selected'));
+  if (
+    ev.target.classList.contains('disabled') ||
+    !ev.target.classList.contains('day')
+  )
+    return;
   selectedDay = ev.target.dataset.day;
   ev.target.classList.add('selected');
   createDinners(ev.target.dataset.day);
